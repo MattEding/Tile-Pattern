@@ -43,7 +43,7 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
     dim : int
     Dimension of the composite shapes.
     
-    val_to_dim : dict (optional)
+    val_to_dim : dict[int] -> func (optional)
     Custom dimensions mapping composite shape value to dimension.
     
     Returns
@@ -76,7 +76,7 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
             arr = CHAR_TO_ARR[char]
             if arr is not None:
                 value = next(fill_value)
-                arr = arr(fill_value=value, dim=val_to_dim.get(value, dim))
+                arr = arr(fill_value=value, dim=val_to_dim.get(value, lambda d: d)(dim))
             row.append(arr)
         bmat.append(row)
     try:
