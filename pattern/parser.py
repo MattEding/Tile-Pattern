@@ -5,7 +5,7 @@ import numpy as np
 from scipy import sparse
 
 
-def unit(fill_value, dim):  # dim param included for signature compatibility
+def unit(fill_value, dim):  #: dim param included for signature compatibility
     return np.array(fill_value)
 
 
@@ -77,7 +77,7 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
     fill_value = itertools.count(start=1)
     lines = pattern.split('\n')
     width = len(max(lines, key=len))
-    bmat = [[None] * width]  # None row avoids bug for some valid patterns (e.g. "|||")
+    bmat = [[None] * width]  #: None row avoids bug for some valid patterns (e.g. "|||")
     for line in lines:
         line = line.ljust(width)
         row = []

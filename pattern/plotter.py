@@ -10,7 +10,7 @@ def plot_square(xy, val, color, **kwargs):
     plt.gca().add_patch(square)
 
 
-def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.gist_ncar, **kwargs):
+def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.summer, **kwargs):
     """Plot nonzero elements of an array.
 
     Parameters
@@ -21,22 +21,28 @@ def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.gist_ncar, **kwargs):
     alpha : int
     Transparency value for facecolor of tiles. Does not affect tile borders.
 
-    colormap : matplotlib.colors.Colormap
+    colormap : matplotlib.colors.Colormap, str
     Colormap to distinguish distinct values in the array.
 
     kwargs : optional
     Keyword arguments passed to matplotlib.pyplot.Rectangle.
     """
+    
     arr = np.asarray(arr)
     values = np.unique(arr[arr > 0])
-    colors = colormap(np.linspace(0, 1, values.size))  # adjust for dim=0
+    if isinstance(colormap, str):
+        colormap = getattr(plt.cm, colormap)
+    colors = colormap(np.linspace(0, 1, values.size))  #TODO: adjust for dim=0
+
     cm = dict(zip(values, colors))
     xs, ys = np.nonzero(arr)
-    for xy in zip(xs.flat, ys.flat):
+    for xy in zip(xs, ys):
         val = arr[xy]
         *rgb, _ = cm[val]
         color = rgb + [alpha]
         plot_square(xy, val, color, **kwargs)
+    plt.axis('equal')
+    plt.axis('off')
 
 
 def plot_pattern(pattern, dim, *, val_to_dim=None, savepath=None, **kwargs):
@@ -59,11 +65,11 @@ def plot_pattern(pattern, dim, *, val_to_dim=None, savepath=None, **kwargs):
     kwargs : (optional)
     Keyword arguments passed to plot_nonzero.
     """
+
     arr = pattern_to_array(pattern, dim, val_to_dim=val_to_dim)
-    plt.figure(figsize=arr.shape)  # test with non-square array if arr.T.shape necessary
-    plot_nonzero(arr.T, **kwargs)
-    plt.axis('equal')
-    plt.axis('off')
+    arr = np.rot90(arr, -1)
+    plt.figure(figsize=arr.shape)
+    plot_nonzero(arr, **kwargs)
 
     if savepath is not None:
         plt.savefig(savepath)
