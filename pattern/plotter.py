@@ -1,3 +1,5 @@
+import string
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -10,7 +12,7 @@ def plot_square(xy, val, color, **kwargs):
     plt.gca().add_patch(square)
 
 
-def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.summer, **kwargs):
+def plot_nonzero(arr, values=None, *, alpha=1, colormap=plt.cm.summer, **kwargs):
     """Plot nonzero elements of an array.
 
     Parameters
@@ -18,22 +20,33 @@ def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.summer, **kwargs):
     arr : array-like
     Nonzero elements will be plotted as square tiles.
 
+    values : array-like (optional)
+    Used to determine coloring scheme of tiles. Useful for dim=0 pattern consistency.
+
     alpha : int
     Transparency value for facecolor of tiles. Does not affect tile borders.
 
     colormap : matplotlib.colors.Colormap, str
     Colormap to distinguish distinct values in the array.
 
-    kwargs : optional
+    kwargs : (optional)
     Keyword arguments passed to matplotlib.pyplot.Rectangle.
     """
     
-    arr = np.asarray(arr)
-    values = np.unique(arr[arr > 0])
+    arr = np.rot90(np.asarray(arr), -1)
+    
+    if values is None:
+        values = np.unique(arr[np.nonzero(arr)])
+    else:
+        values = np.unique(np.asarray(values))
+        if not np.in1d(arr[np.nonzero(arr)], values).all():
+            raise ValueError('values must be superset of elements in arr')
+
     if isinstance(colormap, str):
         colormap = getattr(plt.cm, colormap)
     colors = colormap(np.linspace(0, 1, values.size))  #TODO: adjust for dim=0
 
+    plt.figure(figsize=arr.shape)
     cm = dict(zip(values, colors))
     xs, ys = np.nonzero(arr)
     for xy in zip(xs, ys):
@@ -41,6 +54,7 @@ def plot_nonzero(arr, *, alpha=1, colormap=plt.cm.summer, **kwargs):
         *rgb, _ = cm[val]
         color = rgb + [alpha]
         plot_square(xy, val, color, **kwargs)
+    
     plt.axis('equal')
     plt.axis('off')
 
@@ -67,9 +81,9 @@ def plot_pattern(pattern, dim, *, val_to_dim=None, savepath=None, **kwargs):
     """
 
     arr = pattern_to_array(pattern, dim, val_to_dim=val_to_dim)
-    arr = np.rot90(arr, -1)
-    plt.figure(figsize=arr.shape)
-    plot_nonzero(arr, **kwargs)
+    num_of_parts = sum(char not in string.whitespace for char in pattern)
+    values = np.arange(num_of_parts) + 1
+    plot_nonzero(arr, values, **kwargs)
 
     if savepath is not None:
         plt.savefig(savepath)

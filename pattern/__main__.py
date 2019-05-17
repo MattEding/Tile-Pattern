@@ -2,10 +2,6 @@ import argparse
 import functools
 from pathlib import Path
 
-#TODO: setuptools.py, install, and remove sys
-import sys
-sys.path.append('.')
-
 import matplotlib.pyplot as plt
 
 from pattern import plot_pattern, pattern_to_array
