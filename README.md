@@ -1,4 +1,4 @@
-# Tile Patterns
+# Tile Pattern
 Math teaching tool for generating [quadratic tile patterns][] images from a pattern template. To be used alongside [algebra tiles][] for students to make predictions and write algebraic equations.
 
 [quadratic tile patterns]: https://tasks.illustrativemathematics.org/content-standards/tasks/2121
@@ -37,7 +37,7 @@ optional arguments:
                         prefix used for png output; use alongside outdir
   -v, --verbose         print to stout the array used for png creation
 
->>> python -m pattern pat.txt 1 3 -bw -v -o
+>>> python -m pattern pat.txt 1 3 -bw --verbose --outdir
 Pattern:
 -...
 O ||
@@ -68,7 +68,7 @@ pat1 = """
 """
 
 for i in range(4):
-    pattern.plot(pat1, dim=i, colormap='brg', savepath=f"pat1_dim{i}.jpg")
+    pattern.plot_pattern(pat1, dim=i, colormap='brg', savepath=f"pat1_dim{i}.jpg")
 ```
 ![Fig0](./images/pat1_dim0.png)  
 _Figure 0_

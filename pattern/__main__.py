@@ -21,7 +21,7 @@ parser.add_argument('-o', '--outdir', metavar='DIR', nargs='?', const='.', defau
 parser.add_argument('-p', '--prefix',
                     help='prefix used for png output; use alongside outdir')
 parser.add_argument('-v', '--verbose', action='store_true',
-                    help='print to stout the array used for png creation')
+                    help='print to stdout the array used for png creation')
 
 #TODO: val_to_dim argument using json (https://stackoverflow.com/questions/18608812)
 #      restructure val_to_dim away from lambda to avoid eval usage?
