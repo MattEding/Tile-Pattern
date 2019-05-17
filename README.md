@@ -3,7 +3,7 @@ Math teaching tool for creating [quadratic tile patterns](https://tasks.illustra
 ```python
 import pattern
 
-#: create patterns with text-based building blocks: (., |, -, O)
+#: create patterns with text-based building blocks: (., |, -, /, \, O)
 pat1 = """
  .
 ||O
@@ -18,6 +18,22 @@ pattern.pattern_to_array(pat1, dim=4)
 #        [2, 3, 4, 4, 4, 4],
 #        [0, 5, 0, 0, 0, 0]])
 
+for i in range(4):
+    pattern.plot(pat1, dim=i, alpha=0.5, *savepath=f"pat1_fig{i}.jpg")
+```
+![Fig0](./images/pat1_fig0.png)  
+_Figure 0_
+
+![Fig1](./images/pat1_fig1.png)  
+_Figure 1_
+
+![Fig2](./images/pat1_fig2.png)  
+_Figure 2_
+
+![Fig3](./images/pat1_fig3.png)  
+_Figure 3_
+
+```python
 #: customize dimensions for target values with `val_to_dim`
 pat2 = """
 --. .-

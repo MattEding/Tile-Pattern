@@ -9,10 +9,17 @@ def unit(fill_value, dim):  # dim param included for signature compatibility
     return np.array(fill_value)
 
 
-def linear(fill_value, dim, vert):
+def linear_straight(fill_value, dim, vert):
     arr = np.array([[fill_value] * dim])
     if vert:
         arr = arr.T
+    return arr
+
+
+def linear_diagonal(fill_value, dim, pos):
+    arr = np.eye(dim) * fill_value
+    if pos:
+        arr = np.flip(arr)
     return arr
 
 
@@ -21,10 +28,12 @@ def quadratic(fill_value, dim):
 
 
 CHAR_TO_ARR = {
-    ' ': None, 
-    '.': unit, 
-    '|': functools.partial(linear, vert=True), 
-    '-': functools.partial(linear, vert=False), 
+    ' ': None,
+    '.': unit,
+    '|': functools.partial(linear_straight, vert=True),
+    '-': functools.partial(linear_straight, vert=False),
+    '/': functools.partial(linear_diagonal, pos=True),
+    '\\': functools.partial(linear_diagonal, pos=False),
     'O': quadratic,
 }
 
@@ -38,7 +47,7 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
     Parameters
     ----------
     pattern : str
-    Acceptable composite shapes -- unit(.), linear(| or -), quadratic(O)
+    Acceptable composite shapes -- unit(.), linear(|, -, /, \\), quadratic(O)
     
     dim : int
     Dimension of the composite shapes.
@@ -55,12 +64,12 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
     ------
     ValueError('dimensions must align')
     
-    ValueError('pattern must only consist of: " .|-O"')
+    ValueError('pattern must only consist of: " .|-\\/O"')
     """
     
     pattern = pattern.strip('\n').upper()
     if any(char not in CHAR_TO_ARR for char in pattern if char != '\n'):
-        raise ValueError('pattern must only consist of: " .|-O"')
+        raise ValueError('pattern must only consist of: " .|-\\/O"')
         
     if val_to_dim is None:
         val_to_dim = dict()
