@@ -19,7 +19,7 @@ pattern.pattern_to_array(pat1, dim=4)
 #        [0, 5, 0, 0, 0, 0]])
 
 for i in range(4):
-    pattern.plot(pat1, dim=i, alpha=0.5, *savepath=f"pat1_fig{i}.jpg")
+    pattern.plot(pat1, dim=i, alpha=0.5, savepath=f"pat1_fig{i}.jpg")
 ```
 ![Fig0](./images/pat1_fig0.png)  
 _Figure 0_
