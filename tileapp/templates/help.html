@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Demos</h1>
+  {% for form, img in demos %}
+    <div>
+      <form action="POST">
+        <fieldset>
+          <legend>Demo {{ loop.index }}</legend>
+          <div>
+            {{ form.pattern.label() }}
+            {{ form.pattern(disabled=true) }}
+          </div>
+          <div>
+            {{ form.fignum.label() }}
+            {{ form.fignum(disabled=true) }}
+          </div>
+          <div>
+            {{ form.colormap.label() }}
+            {{ form.colormap(disabled=true) }}
+          </div>
+          <div>
+            {{ form.alpha.label() }}
+            {{ form.alpha(disabled=true) }}
+          </div>
+        </fieldset>
+        <div>
+          <img src="data:image/format;base64,{{ img | safe }}" alt="Demo {{ loop.index }}">
+        </div>
+      </form>
+    </div>
+  {% endfor %}
+{% endblock content %}

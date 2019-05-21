@@ -71,7 +71,12 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
     ValueError('pattern must only consist of: " .|-\\/O"')
     """
     
-    pattern = pattern.strip(string.whitespace).upper().replace('\r', '').replace('0', 'O')
+    pattern = (pattern.strip('\n')
+                      .upper()
+                      .replace('\r', '')
+                      .replace('0', 'O')
+                      .replace('L', '|')
+                      .replace('1', '|'))
     if any(char not in CHAR_TO_ARR for char in pattern if char != '\n'):
         raise ValueError('pattern must only consist of: " .|-\\/O"')
         
@@ -137,7 +142,7 @@ def plot_nonzero(arr, values=None, *, alpha=1, colormap=plt.cm.summer, **kwargs)
 
     if isinstance(colormap, str):
         colormap = getattr(plt.cm, colormap)
-    colors = colormap(np.linspace(0, 1, values.size))  #TODO: adjust for dim=0
+    colors = colormap(np.linspace(0.1, 0.9, values.size))  #TODO: adjust for dim=0
 
     plt.figure(figsize=arr.shape)
     cm = dict(zip(values, colors))

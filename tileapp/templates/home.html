@@ -1,4 +1,61 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h1>Testing Homepage</h1>
+  <h1>Quadratic Tile Patterns</h1>
+  <div>
+    <p>
+      Algebra tiles are great tools for teaching students how 
+      to look for patterns and make predictions.
+
+      <br>
+
+      For instance, a great task would be to ask students to draw 
+      the missing figures and write a general equation describing
+      how the pattern changes.
+    </p>
+    <table>
+      <tr>
+        {% for x in range(5) %}
+          <th>Fig. {{ x }}</th>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for fig, mask in figs_bw_mask %}
+          {% if mask %}
+            <td><img src="data:image/format;base64,{{ fig | safe }}" class="td-img hidden"></td>
+          {% else %}
+            <td><img src="data:image/format;base64,{{ fig | safe }}" class=td-img></td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    </table>
+    <p>
+      This app has been designed to make the creation of such patterns
+      easy so you don't have to manually draw the tiles.
+      With a simple text-based input to represent algebra tiles, you can 
+      quickly roll out worksheets for students to work with.
+      The only restriction is that unit side lengths cannot be matched
+      with variable side lengths. (i.e. <mono>'O.'</mono> is invalid)
+      <ul>
+        <li>Unit Tile: <mono>'.'</mono></li>
+        <li>Linear Tile: <mono>'-'</mono> or <mono>'|'</mono></li>
+        <li>Quadratic Tile: <mono>'O'</mono></li>
+      </ul>
+      Not only that, you can create dynamically colored tile patterns
+      to emphasize how each constituent algebra tile relates to the
+      larger picture.
+      For example, here is a color coded key for the missing figures above:
+      <table>
+        <tr>
+          {% for x in range(5) %}
+            <th>Fig. {{ x }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for fig in figs_clr %}
+            <td><img src="data:image/format;base64,{{ fig | safe }}" class=td-img></td>
+          {% endfor %}
+        </tr>
+      </table>
+    </p>
+  </div>
 {% endblock content %}

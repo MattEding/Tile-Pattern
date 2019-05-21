@@ -4,7 +4,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from pattern import plot_pattern, pattern_to_array
+from tileapp.image import plot_pattern, pattern_to_array
 
 
 parser = argparse.ArgumentParser(description='Tile pattern parser from txt to png')
