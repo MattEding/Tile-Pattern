@@ -4,6 +4,10 @@ Math teaching tool for generating [quadratic tile patterns][] images from a patt
 [quadratic tile patterns]: https://tasks.illustrativemathematics.org/content-standards/tasks/2121
 [algebra tiles]: https://en.wikipedia.org/wiki/Algebra_tile 
 
+<!-- <img src="./images/pat_a_dim3.png" width="" height="">
+<img src="./images/pat_b_dim4.png" width="50%" height="50%">
+<img src="./images/pat_c_dim2.png" width="50%" height="50%"> -->
+
 Accepted Tile Placeholders:
 - Unit(.)
 - Linear(-, |, /, \\) _[Note: diagonals being worked on]_
@@ -25,8 +29,8 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -bw, --blackwhite     make png output black and white; will override
-                        colormap
+  -a, --alpha           transparency of the colors used in png output; 
+                        set to 0 for b/w png
   -cm COLORMAP, --colormap COLORMAP
                         colormap used to differentiate tile parts; see
                         https://matplotlib.org/tutorials/colors/colormaps.html
@@ -35,9 +39,9 @@ optional arguments:
                         popup; if not arg, save png to cwd
   -p PREFIX, --prefix PREFIX
                         prefix used for png output; use alongside outdir
-  -v, --verbose         print to stout the array used for png creation
+  -v, --verbose         print to stdout the array used for png creation
 
->>> python -m pattern pat.txt 1 3 -bw --verbose --outdir
+>>> python -m pattern pat.txt 1 3 --alpha 0 --verbose --outdir
 Pattern:
 -...
 O ||

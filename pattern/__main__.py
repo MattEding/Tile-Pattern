@@ -12,10 +12,11 @@ parser.add_argument('infile',
                     help='filepath with pattern to parse')
 parser.add_argument('dim', type=int, nargs='+', 
                     help='dimensions to form pattern')
-parser.add_argument('-bw', '--blackwhite', action='store_false',
-                    help='make png output black and white; will override colormap')
+parser.add_argument('-a', '--alpha', default=1.0, type=float,
+                    help='transparency of the colors used in png output; set to 0 for b/w png')
+colormap_refrence = 'https://matplotlib.org/gallery/color/colormap_reference.html'
 parser.add_argument('-cm', '--colormap', default='rainbow',
-                    help='colormap used to differentiate tile parts; see https://matplotlib.org/tutorials/colors/colormaps.html')
+                    help=f'colormap used to differentiate tile parts; see {colormap_refrence}')
 parser.add_argument('-o', '--outdir', metavar='DIR', nargs='?', const='.', default=None,
                     help='destination file for png output; if omitted, png is popup; if not arg, save png to cwd')
 parser.add_argument('-p', '--prefix',
@@ -46,7 +47,7 @@ if args.verbose:
     print('Pattern:')
     print(pat)
 
-plt_pat = functools.partial(plot_pattern, pat, alpha=args.blackwhite, colormap=args.colormap)
+plt_pat = functools.partial(plot_pattern, pat, alpha=args.alpha, colormap=args.colormap)
 for dim in args.dim:
     if args.verbose:
         arr = pattern_to_array(pat, dim)
