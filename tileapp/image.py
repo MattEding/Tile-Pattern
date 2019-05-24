@@ -9,7 +9,7 @@ import numpy as np
 from scipy import sparse
 
 
-def unit(fill_value, dim):  #: dim param included for signature compatibility
+def unit(fill_value, dim):  #: `dim` param included for signature compatibility
     return np.array(fill_value)
 
 
@@ -42,33 +42,11 @@ CHAR_TO_ARR = {
 }
 
 
-def pattern_to_array(pattern, dim, *, val_to_dim=None):
-    """
-    Example with dim=2: pattern     values      array([[1, 2, 2, 3, 3, 4, 0],
-                         .--.        1234              [0, 5, 5, 0, 0, 6, 7],
-                          O ||        5 67             [0, 5, 5, 0, 0, 6, 7]]) 
-    
-    Parameters
-    ----------
-    pattern : str
-    Acceptable composite shapes -- unit(.), linear(|, -, /, \\), quadratic(O)
-    
-    dim : int
-    Dimension of the composite shapes.
-    
-    val_to_dim : dict[int] -> func (optional)
-    Custom dimensions mapping composite shape value to dimension.
-    
-    Returns
-    -------
-    arr : ndarray
-    Array with 0s for empty space and integer values for each individual composite shape.
-    
-    Raises
-    ------
-    ValueError('dimensions must align')
-    
-    ValueError('pattern must only consist of: " .|-\\/O"')
+def pattern_to_array(pattern, dim):
+    """Convert a pattern to an array.
+    Example with dim=2: pattern      array([[1, 2, 2, 3, 3, 4, 0],
+                         .--.              [0, 5, 5, 0, 0, 6, 7],
+                          O ||             [0, 5, 5, 0, 0, 6, 7]]) 
     """
     
     pattern = (pattern.strip('\n')
@@ -79,9 +57,6 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
                       .replace('1', '|'))
     if any(char not in CHAR_TO_ARR for char in pattern if char != '\n'):
         raise ValueError('pattern must only consist of: " .|-\\/O"')
-        
-    if val_to_dim is None:
-        val_to_dim = dict()
     
     fill_value = itertools.count(start=1)
     lines = pattern.split('\n')
@@ -94,7 +69,7 @@ def pattern_to_array(pattern, dim, *, val_to_dim=None):
             arr = CHAR_TO_ARR[char]
             if arr is not None:
                 value = next(fill_value)
-                arr = arr(fill_value=value, dim=val_to_dim.get(value, lambda d: d)(dim))
+                arr = arr(fill_value=value, dim=dim)
             row.append(arr)
         bmat.append(row)
     try:
@@ -110,29 +85,13 @@ def plot_square(xy, val, color, **kwargs):
     plt.gca().add_patch(square)
 
 
-def plot_nonzero(arr, values=None, *, alpha=1, colormap=plt.cm.summer, **kwargs):
+def plot_nonzero(arr, values=None, *, alpha=1.0, colormap=plt.cm.summer, **kwargs):
     """Plot nonzero elements of an array.
-
-    Parameters
-    ----------
-    arr : array-like
-    Nonzero elements will be plotted as square tiles.
-
-    values : array-like (optional)
-    Used to determine coloring scheme of tiles. Useful for dim=0 pattern consistency.
-
-    alpha : int
-    Transparency value for facecolor of tiles. Does not affect tile borders.
-
-    colormap : matplotlib.colors.Colormap, str
-    Colormap to distinguish distinct values in the array.
-
-    kwargs : (optional)
-    Keyword arguments passed to matplotlib.pyplot.Rectangle.
     """
     
     arr = np.rot90(np.asarray(arr), -1)
     
+    #: `values` used for dim=0 color consistency with dim=N
     if values is None:
         values = np.unique(arr[np.nonzero(arr)])
     else:
@@ -142,7 +101,7 @@ def plot_nonzero(arr, values=None, *, alpha=1, colormap=plt.cm.summer, **kwargs)
 
     if isinstance(colormap, str):
         colormap = getattr(plt.cm, colormap)
-    colors = colormap(np.linspace(0.1, 0.9, values.size))  #TODO: adjust for dim=0
+    colors = colormap(np.linspace(0.1, 0.9, values.size))
 
     plt.figure(figsize=arr.shape)
     cm = dict(zip(values, colors))
@@ -159,20 +118,6 @@ def plot_nonzero(arr, values=None, *, alpha=1, colormap=plt.cm.summer, **kwargs)
 
 def plot_pattern(pattern, dim, savepath=None, **kwargs):
     """Plot a tile pattern for a given dimension.
-    
-    Parameters
-    ----------
-    pattern : str
-    Acceptable composite shapes -- unit(.), linear(|, -, /, \\), quadratic(O)
-    
-    dim : int
-    Dimension of the composite shapes.
-    
-    savepath : path-like object (optional)
-    Filename to save plot to.
-
-    kwargs : (optional)
-    Keyword arguments passed to plot_nonzero.
     """
 
     arr = pattern_to_array(pattern, dim)

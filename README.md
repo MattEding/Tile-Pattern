@@ -1,12 +1,11 @@
 # Tile Pattern
 Math teaching tool for generating [quadratic tile patterns][] images from a pattern template. To be used alongside [algebra tiles][] for students to make predictions and write algebraic equations.
 
+## Heroku Web App
+Visit [Heroku web app](https://tilepattern.herokuapp.com/) and try it yourself. (Note it may take a few seconds on intial launch to wake Heroku's dynos since it is a free account.)
+
 [quadratic tile patterns]: https://tasks.illustrativemathematics.org/content-standards/tasks/2121
 [algebra tiles]: https://en.wikipedia.org/wiki/Algebra_tile 
-
-<!-- <img src="./images/pat_a_dim3.png" width="" height="">
-<img src="./images/pat_b_dim4.png" width="50%" height="50%">
-<img src="./images/pat_c_dim2.png" width="50%" height="50%"> -->
 
 Accepted Tile Placeholders:
 - Unit(.)
@@ -17,7 +16,7 @@ _[Currently can only align tiles along matching side lengths.]_
 
 ## CLI Usage
 ```
->>> python -m pattern -h
+>>> python -m tileapp -h
 usage: pattern [-h] [-bw] [-cm COLORMAP] [-o [DIR]] [-p PREFIX] [-v]
                infile dim [dim ...]
 
@@ -59,56 +58,3 @@ pat_dim1.png    pat_dim3.png
 ```
 ![Dim1](./images/pat_dim1.png)
 ![Dim3](./images/pat_dim3.png)
-
-## Package Usage
-```python
-import pattern
-
-#: create patterns with text-based building blocks: (., |, -, /, \, O)
-pat1 = """
- .
-||O
- .
-"""
-
-for i in range(4):
-    pattern.plot_pattern(pat1, dim=i, colormap='brg', savepath=f"pat1_dim{i}.jpg")
-```
-![Fig0](./images/pat1_dim0.png)  
-_Figure 0_
-
-![Fig1](./images/pat1_dim1.png)  
-_Figure 1_
-
-![Fig2](./images/pat1_dim2.png)  
-_Figure 2_
-
-![Fig3](./images/pat1_dim3.png)  
-_Figure 3_
-
-```python
-#: customize dimensions for target values with `val_to_dim`
-pat2 = """
---. .-
-  | |
-  | |
-  . .
-   |
-  . .
-"""
-
-vtd = {
-    5: lambda d: d * 3, 
-    12: lambda d: 3 - d
-}
-
-pattern.pattern_to_array(pat2, dim=2, val_to_dim=vtd)
-# array([[ 1,  1,  2,  2,  3,  0,  4,  5,  5,  5,  5,  5,  5],
-#        [ 0,  0,  0,  0,  6,  0,  7,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0,  6,  0,  7,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0,  8,  0,  9,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0,  8,  0,  9,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0, 10,  0, 11,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0,  0, 12,  0,  0,  0,  0,  0,  0,  0],
-#        [ 0,  0,  0,  0, 13,  0, 14,  0,  0,  0,  0,  0,  0]])
-```

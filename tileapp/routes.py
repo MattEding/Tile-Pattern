@@ -1,6 +1,6 @@
 from functools import partial
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, render_template
 from tileapp import app
 from tileapp.forms import PatternForm
 from tileapp.image import plot_pattern, pattern_to_html
@@ -30,8 +30,12 @@ def pattern():
         fignum = form.fignum.data
         colormap = form.colormap.data
         alpha = form.alpha.data
-        img_ascii = pattern_to_html(pattern, fignum, colormap, alpha)
-        return render_template('pattern.html', title='Pattern', form=form, img=img_ascii)
+        try:
+            img_ascii = pattern_to_html(pattern, fignum, colormap, alpha)
+        except ValueError as exc:
+            flash(exc)
+        else:
+            return render_template('pattern.html', title='Pattern', form=form, img=img_ascii)
     return render_template('pattern.html', title='Pattern', form=form, img=None)
 
 
@@ -62,7 +66,6 @@ pat_3 = """
 
 @app.route('/help')
 def help():
-    # help and documentation
     form_1, img_1 = create_demo(pat_1, 2, 'winter', 1.0)
     form_2, img_2 = create_demo(pat_2, 3, 'gray', 0.0)
     form_3, img_3 = create_demo(pat_3, 2, 'rainbow', 0.75)
