@@ -1,26 +1,30 @@
 provider "heroku" {
-    email   = "${var.heroku_email}"
-    api_key = "${var.heroku_api_key}"
+  email   = var.heroku_email
+  api_key = var.heroku_api_key
 }
 
-resource "heroku_app" "webapp" {
-    name       = "${var.app_name}"
-    region     = "${var.region}"
-    buildpacks = ["heroku/python"]
+resource "heroku_app" "web_app" {
+  name       = var.app_name
+  region     = var.region
+  buildpacks = ["heroku/python"]
+
+  sensitive_config_vars = {
+    SECRET_KEY = var.secret_key
+  }
 }
 
-resource "heroku_build" "webapp" {
-    app = "${heroku_app.webapp.name}"
-    
-    source = {
-        path = "../src"
-    }
+resource "heroku_build" "web_app" {
+  app = heroku_app.web_app.name
+
+  source = {
+    path = "../src"
+  }
 }
 
-resource "heroku_formation" "webapp" {
-  app        = "${heroku_app.webapp.name}"
+resource "heroku_formation" "web_app" {
+  app        = heroku_app.web_app.name
   type       = "web"
-  quantity   = 1
-  size       = "free"
-  depends_on = ["heroku_build.webapp"]
+  quantity   = var.quantity
+  size       = var.size
+  depends_on = ["heroku_build.web_app"]
 }

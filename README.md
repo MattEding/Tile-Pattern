@@ -1,4 +1,8 @@
 # Tile Pattern
+![Image1](./images/ex_dim0.png)
+![Image1](./images/ex_dim1.png)
+![Image1](./images/ex_dim2.png)
+
 Math teaching tool for generating [quadratic tile patterns][] images from a pattern template. To be used alongside [algebra tiles][] for students to make predictions and write algebraic equations.
 
 ## Heroku Web App
@@ -9,12 +13,19 @@ Visit [Heroku web app](https://tilepattern.herokuapp.com/) and try it yourself. 
 
 Accepted Tile Placeholders:
 - Unit(.)
-- Linear(-, |, /, \\) _[Note: diagonals being worked on]_
+- Linear(-, |)
 - Quadratic(O)
 
 _[Currently can only align tiles along matching side lengths.]_
 
-## CLI Usage
+## Deploy Your Own Heroku App
+- Make Heroku account and save [authorizations](https://devcenter.heroku.com/articles/using-terraform-with-heroku#authorization)
+- Install [terraform](https://www.terraform.io/downloads.html)
+- Create a secret key; provided for convenience is `src/secret_key.py`
+- Run `terraform init` followed by `terraform apply`
+- Click on output `app_url` and enjoy!
+
+## CLI Usage for Offline Usage
 ```
 >>> python -m tileapp -h
 usage: pattern [-h] [-bw] [-cm COLORMAP] [-o [DIR]] [-p PREFIX] [-v]

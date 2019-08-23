@@ -3,13 +3,24 @@ variable "heroku_api_key" {}
 variable "heroku_email" {}
 
 variable "secret_key" {
-    description = "to be set by Docker with python secrets.token_hex(16)"
+  description = "Secret key used in Flask app for WTForms"
 }
 
 variable "app_name" {
-    default = "tile-pattern-app"
+  description = "Globally unique Heroku app name"
+  default     = "tile-pattern-app"
 }
 
 variable "region" {
-    default = "us"
+  default = "us"
+}
+
+variable "quantity" {
+  description = "Number of dynos to acivate"
+  default     = 1
+}
+
+variable "size" {
+  description = "Heroku dyno type"
+  default     = "Free"
 }
