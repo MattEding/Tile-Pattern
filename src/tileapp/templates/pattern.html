@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Customize Patterns</h1>
+  <div>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <fieldset>
+        <legend>Input a Tile Pattern</legend>
+        <div>
+          {{ form.pattern.label() }}
+          {% if form.pattern.errors %}
+            {{ form.pattern() }}  <!-- separate css todo -->
+            <div>
+              {% for error in form.pattern.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.pattern() }}
+          {% endif %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+        <div>
+          {{ form.fignum.label() }}
+          {% if form.fignum.errors %}
+            {{ form.fignum() }}
+            <div>
+              {% for error in form.fignum.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.fignum() }}
+          {% endif %}
+        </div>
+        <div>
+          {{ form.colormap.label() }}
+          {% if form.colormap.errors %}
+            {{ form.colormap() }}
+            <div>
+              {% for error in form.colormap.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.colormap() }}
+          {% endif %}
+        </div>
+        <div>
+          {{ form.alpha.label() }}
+          {% if form.alpha.errors %}
+            {{ form.alpha() }}
+            <div>
+              {% for error in form.alpha.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.alpha() }}
+          {% endif %}
+        </div>
+      </fieldset>
+      <div>
+        {{ form.submit() }}
+      </div>
+    </form>
+  </div>
+
+  {% if img %}
+    <div>
+      <img src="data:image/format;base64,{{ img | safe }}" alt="Tile Pattern Figure">
+      <!-- save image -->
+    </div>
+  {% endif %}
+{% endblock content %}

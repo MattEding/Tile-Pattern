@@ -1,0 +1,6 @@
+flask
+flask-wtf
+gunicorn
+matplotlib
+numpy
+scipy

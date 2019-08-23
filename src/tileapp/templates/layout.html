@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  {% if title %}
+    <title>Tile Patterns - {{ title }}</title>
+  {% else %}
+    <title>Tile Patterns</title>
+  {% endif %}
+</head>
+<body>
+  <header>
+    <nav>
+      <div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('pattern') }}">Pattern</a>
+        <a href="{{ url_for('help') }}">Help</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

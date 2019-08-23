@@ -1,5 +1,0 @@
-flask
-flask-wtf
-matplotlib
-numpy
-scipy
